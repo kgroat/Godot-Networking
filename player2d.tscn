@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://djv2esdpqlyn2"]
+
+[ext_resource type="Texture2D" uid="uid://dukrxkrwa1mtw" path="res://art/player.png" id="1_igqjb"]
+[ext_resource type="Script" path="res://player_input.gd" id="1_j04vm"]
+[ext_resource type="Script" path="res://player2d.gd" id="1_v11y7"]
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_q77c1"]
+properties/0/path = NodePath(".:player")
+properties/0/spawn = true
+properties/0/replication_mode = 0
+properties/1/path = NodePath(".:position")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_xad1x"]
+properties/0/path = NodePath("PlayerInput:direction")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_3nf0a"]
+radius = 25.0
+
+[node name="Player" type="CharacterBody2D"]
+motion_mode = 1
+script = ExtResource("1_v11y7")
+metadata/_edit_group_ = true
+
+[node name="ServerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_q77c1")
+
+[node name="PlayerInput" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_xad1x")
+script = ExtResource("1_j04vm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_3nf0a")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.25, 0.25)
+texture = ExtResource("1_igqjb")
+
+[node name="Camera2D" type="Camera2D" parent="."]
