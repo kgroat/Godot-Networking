@@ -14,8 +14,7 @@ func _ready() -> void:
 		var pos := Vector2.from_angle(randf() * 2 * PI)
 		var resource = preload("res://game_resource.tscn").instantiate()
 		resource.position = Vector2(pos.x * SPAWN_RANDOM * randf(), pos.y * SPAWN_RANDOM * randf())
-		resource.name = _next_resource_name()
-		$Resources.add_child(resource)
+		$Resources.add_child(resource, true)
 
 	multiplayer.peer_connected.connect(add_player)
 	multiplayer.peer_disconnected.connect(del_player)
@@ -75,13 +74,12 @@ func _find_closest_resource(pos: Vector2) -> GameResource:
 func _process_grabs():
 	for player in $Players.get_children() as Array[Player]:
 		if !player.grabbed && player.input.grabbing:
-			if player.resource != GameResource.NONE:
+			if player.resource != GameResource.TYPES.NONE:
 				var res = preload("res://game_resource.tscn").instantiate()
 				res.position = player.position
 				res.type = player.resource
-				res.name = _next_resource_name()
-				$Resources.add_child(res)
-				player.resource = GameResource.NONE
+				$Resources.add_child(res, true)
+				player.resource = GameResource.TYPES.NONE
 			else:
 				var res = _find_closest_resource(player.position)
 				if (res.position - player.position).length() < 50:
@@ -90,10 +88,3 @@ func _process_grabs():
 			player.grabbed = true
 		elif player.grabbed && !player.input.grabbing:
 			player.grabbed = false
-
-var next_resource_id = 0
-
-func _next_resource_name():
-	var id = next_resource_id
-	next_resource_id += 1
-	return "Resource_" + str(id)
