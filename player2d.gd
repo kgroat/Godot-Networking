@@ -11,7 +11,7 @@ const GameResource = preload("res://game_resource.gd")
 
 @export var grabbed = false
 
-@export var resource: String = "NONE"
+@export var resource: GameResource.Types = GameResource.Types.NONE
 
 # Player synchronized input.
 @onready var input = $PlayerInput

@@ -74,12 +74,12 @@ func _find_closest_resource(pos: Vector2) -> GameResource:
 func _process_grabs():
 	for player in $Players.get_children() as Array[Player]:
 		if !player.grabbed && player.input.grabbing:
-			if player.resource != GameResource.TYPES.NONE:
+			if player.resource != GameResource.Types.NONE:
 				var res = preload("res://game_resource.tscn").instantiate()
 				res.position = player.position
 				res.type = player.resource
 				$Resources.add_child(res, true)
-				player.resource = GameResource.TYPES.NONE
+				player.resource = GameResource.Types.NONE
 			else:
 				var res = _find_closest_resource(player.position)
 				if (res.position - player.position).length() < 50:

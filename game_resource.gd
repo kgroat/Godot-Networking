@@ -1,11 +1,11 @@
 extends StaticBody2D
 
-const TYPES = {
-	"NONE": "NONE",
-	"RED": "RED"
+enum Types {
+	NONE = 0,
+	RED = 1
 }
 
-@export var type := TYPES.RED
+@export var type := Types.RED
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
